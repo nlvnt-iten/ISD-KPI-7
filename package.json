@@ -1,0 +1,14 @@
+{
+  "name": "corporate-chat-server",
+  "version": "1.0.0",
+  "description": "Corporative chat server using WebSockets",
+  "main": "server.js",
+  "scripts": {
+    "start": "node index.js"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "ws": "^8.4.0"
+  }
+}

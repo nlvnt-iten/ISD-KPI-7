@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="UTF-8" />
+    <title>Корпоративний чат</title>
+  </head>
+  <body>
+    <input type="text" id="ipnInput" placeholder="Введіть ІПН" />
+    <button onclick="sendMessage()">Відправити</button>
+    <div id="messageArea"></div>
+
+    <script>
+      const socket = new WebSocket('ws://localhost:8080');
+      const messageArea = document.getElementById('messageArea');
+
+      socket.onmessage = (event) => {
+        const messageData = JSON.parse(event.data);
+
+        if (messageData.error) {
+          const errorMessage = messageData.error;
+          const messageElement = document.createElement('p');
+          messageElement.textContent = `${messageData.time} - ${errorMessage}`;
+          messageArea.appendChild(messageElement);
+        } else {
+          const { time, ipn, sugar, bagasse } = messageData;
+          const messageElement = document.createElement('p');
+          messageElement.textContent = `${time} - ІПН: ${ipn}, Кількість цукру: ${sugar}, Кількість жому: ${bagasse}`;
+          messageArea.appendChild(messageElement);
+        }
+      };
+
+      function sendMessage() {
+        const ipnInput = document.getElementById('ipnInput');
+        const ipn = ipnInput.value;
+        socket.send(ipn);
+        ipnInput.value = '';
+      }
+    </script>
+  </body>
+</html>
